@@ -2,44 +2,65 @@
 #include <stdlib.h>
 
 typedef struct node {
-	char letter;
-	struct node* next;
+    char letter;
+    struct node* next;
 } node;
 
+// Beginning of Implementation
 // Returns number of nodes in the linkedList.
 int length(node* head)
 {
-   struct node *tmp = head;
-    int len = 0;
-   while (tmp != NULL)
-   {
-      tmp = tmp->next;
-      len++;
-   }
-
-   return (len);
+    int count = 0;
+    node* current = head;
+    while (current != NULL)
+    {
+        count++;
+        current = current->next;
+    }
+    return count;
 }
 
-// parses the string in the linkedList
-//  if the linked list is head -> |a|->|b|->|c|
-//  then toCString function wil return "abc"
+// Parses the string in the linkedList
+// If the linked list is head -> |a|->|b|->|c|,
+// then toCString function will return "abc"
 char* toCString(node* head)
 {
+    int len = length(head);
+    char* str = (char*)malloc((len + 1) * sizeof(char));
+    int i = len - 1;
+    str[len] = '\0';
+    node* current = head;
+    while (current != NULL)
+    {
+        str[i--] = current->letter;
+        current = current->next;
+    }
+    return str;
 }
 
-// inserts character to the linkedlist
-// f the linked list is head -> |a|->|b|->|c|
-// then insertChar(&head, 'x') will update the linked list as foolows:
+// Inserts character to the linkedlist
+// If the linked list is head -> |a|->|b|->|c|,
+// then insertChar(&head, 'x') will update the linked list as follows:
 // head -> |a|->|b|->|c|->|x|
 void insertChar(node** pHead, char c)
 {
+    node* newNode = (node*)malloc(sizeof(node));
+    newNode->letter = c;
+    newNode->next = *pHead;
+    *pHead = newNode;
 }
 
-// deletes all nodes in the linkedList.
+// Deletes all nodes in the linkedList.
 void deleteList(node** pHead)
 {
+    while (*pHead != NULL)
+    {
+        node* temp = *pHead;
+        *pHead = (*pHead)->next;
+        free(temp);
+    }
 }
-
+// End of Implementation
 int main(void)
 {
 	int i, strLen, numInputs;
